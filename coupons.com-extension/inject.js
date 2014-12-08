@@ -13,7 +13,7 @@ function scrollBottom() {
 			scrollBottom();
 		}
 		else {
-			alert("Extension finished running. Coupons displayed: " + couponsdisplayed);	
+			alert("All clippable coupons (" + couponsdisplayed +") were loaded.");	
 		}
 	}, 500);
 }
