@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Coupons.com display all coupons",
+  "description": "Displays all coupons on page",
+  "version": "1.0",
+
+  "permissions": [
+    "alarms",
+  	"tabs",
+    "http://www.coupons.com/*", 
+    "https://www.coupons.com/*"
+  ],
+
+ "page_action": {
+    "default_title": "Coupons.com display coupons",
+    "default_icon": "icon.png" // This icon was downloaded from http://www.iconarchive.com
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
+}
