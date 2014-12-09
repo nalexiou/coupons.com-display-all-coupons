@@ -13,7 +13,8 @@ function scrollBottom() {
 			scrollBottom();
 		}
 		else {
-			alert("All clippable coupons (" + couponsdisplayed +") were loaded.");	
+			alert("All clippable coupons (" + couponsdisplayed +") were loaded.");
+			window.scrollTo(0,0);	
 		}
 	}, 500);
 }
