@@ -17,6 +17,9 @@
   },
 
   "background": {
-    "scripts": ["background.js"]
-  }
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "web_accessible_resources": ["myspinner.gif", "checkmark.png"]
 }
