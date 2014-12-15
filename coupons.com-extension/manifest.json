@@ -13,6 +13,7 @@
  "page_action": {
     "default_title": "Coupons.com display all coupons",
     "default_icon": "icon.png",
+    "48": "icon48.png",
     "128": "icon128.png"
   },
 

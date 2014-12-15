@@ -1,0 +1,18 @@
+div#myloader {
+background:#6495ED no-repeat center center;
+text-align: center;
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: 400px;
+width: 500px;
+position: fixed;
+left: 50%;
+top: 50%;
+margin: auto;
+z-index: 999;
+}
+div#myloader div {
+margin: 40px 0px 0px 0px;
+}
