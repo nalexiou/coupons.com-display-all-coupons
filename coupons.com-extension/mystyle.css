@@ -7,12 +7,37 @@ left: 50%;
 transform: translate(-50%, -50%);
 height: 400px;
 width: 500px;
-position: fixed;
-left: 50%;
-top: 50%;
 margin: auto;
 z-index: 999;
 }
-div#myloader div {
+
+div#myloader div  {
 margin: 40px 0px 0px 0px;
+}
+
+div#myloader input, button {
+  font:1.2em Myriad Pro;
+  margin: 200px 0px 0px 0px;
+}
+
+div#myloader input {
+  flex:1;
+  padding:0.6em;
+  border:0.2em ;
+}
+button#cancel{
+position: absolute;
+top: 0px;
+right: 0px;
+margin: auto;
+}
+
+
+div#myloader button{
+  padding:0.8em;
+  background-color:#2ecc71;
+  color:white;
+}
+div#myloader button:hover {
+	cursor:pointer;
 }
