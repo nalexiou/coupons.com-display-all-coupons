@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Coupons.com helper",
-  "description": "Display all coupons on coupons.com",
-  "version": "1.0.2",
+  "name": "Coupons.com Helper",
+  "description": "Display all coupons on coupons.com. ",
+  "version": "1.0.3",
 
   "permissions": [
   	"tabs",
@@ -10,11 +10,13 @@
     "https://www.coupons.com/*"
   ],
 
+"icons": { "16": "icon.png",
+           "48": "icon48.png",
+          "128": "icon128.png" },
+
  "page_action": {
     "default_title": "Coupons.com display all coupons",
-    "default_icon": "icon.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "default_icon": "icon.png"
   },
 
   "background": {

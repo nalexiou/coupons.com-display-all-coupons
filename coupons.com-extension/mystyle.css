@@ -9,16 +9,79 @@ height: 400px;
 width: 500px;
 margin: auto;
 z-index: 999;
+color:#FFF;
+font:1.2em Myriad Pro;
 }
 
-div#myloader div  {
-margin: 40px 0px 0px 0px;
+#toptext, #mycoupontotal {
+margin: 100px 0px 0px 0px;
+font:1.2em Myriad Pro;
+}
+
+.field {
+  display:flex;
+  position:relative;
+  margin:3em auto;
+  width:80%;
+}
+
+.field>input[type=text],
+.field>button {
+  display:block;
+  font:1.2em Myriad Pro;
+}
+
+.field>input[type=text] {
+  flex:1;
+  padding:0.6em;
+  border:0.2em ;
+}
+
+.field>button {
+  padding:0.6em 0.8em;
+  background-color:#2ecc71;
+  color:white;
+  border:none;
+}
+.field>button:hover {
+	cursor:pointer;
+}
+
+button#cancel {
+padding:0.6em 0.8em;
+background-color:#2ecc71;
+color:white;
+border:none;
+position: absolute;
+top: 0px;
+right: 0px;
+margin: auto;
+}
+
+/*h2{
+	display:block;
+	color:#FFF;
+	text-align:center;
+	font-size:30px;
+	padding:50px;
+}*/
+
+div#myloader h2 {
+  color:#FFF;
+  font:1.2em Myriad Pro;
+  margin: 125px 0px 0px 0px;
+}
+/*
+div#myloader h2 {
+  font:1.2em Myriad Pro;
+  margin: 150px 0px 0px 0px;
 }
 
 div#myloader input, button {
   font:1.2em Myriad Pro;
-  margin: 200px 0px 0px 0px;
+  margin: 50px 0px 0px 0px;
 }
+
 
 div#myloader input {
   flex:1;
@@ -40,4 +103,4 @@ div#myloader button{
 }
 div#myloader button:hover {
 	cursor:pointer;
-}
+}*/
