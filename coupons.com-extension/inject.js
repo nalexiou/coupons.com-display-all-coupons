@@ -40,7 +40,7 @@ function scrollBottom() {
 			$('#myloader').css('background-image', 'URL(' + chrome.extension.getURL('checkmark.png') + ')');
 			$('div#myloader div').text('Loading complete! ').append('<br/><br/> Total coupons: ' + couponsdisplayed );
 			setTimeout(function(){
-				var myform ='<div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate" /><button type="button" id="search">Find</button></div>';
+				var myform ='<div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div>';
 				var mydiv = $("<div>", {id: "myloader"});
 				mydiv.append(myform);
 				$('#myloader').replaceWith(mydiv);
