@@ -71,7 +71,7 @@ function scrollBottom() {
 				window.scrollTo(0,0);
 			}, 3000);
 		}
-	}, 500);
+	}, 1500);
 }
 
 function searchCoupons(arg){
@@ -86,6 +86,7 @@ function searchCoupons(arg){
 				}).first().replaceWith(item);
 				$(itemparent).prepend(temp);
 			});
+		window.scrollTo(0,0);
 	}
 	else {
 		$('#myloader div h2').text('\"'+keywords+ '\" not found. Search for something else!');

