@@ -1,8 +1,10 @@
 {
   "manifest_version": 2,
   "name": "Coupons.com Helper",
-  "description": "Display and search all coupons on coupons.com. ",
-  "version": "1.0.4",
+  "short_name": "Coupon Help",
+  "description": "Display and search all coupons on coupons.com.",
+  "version": "1.0.5",
+  "author": "Nikolaos Alexiou",
 
   "permissions": [
   	"tabs",
@@ -10,11 +12,11 @@
     "https://www.coupons.com/*"
   ],
 
-"icons": { "16": "icon.png",
+  "icons": { "16": "icon.png",
            "48": "icon48.png",
           "128": "icon128.png" },
 
- "page_action": {
+  "page_action": {
     "default_title": "Coupons.com display all coupons",
     "default_icon": "icon.png"
   },
