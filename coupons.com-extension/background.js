@@ -6,14 +6,21 @@ chrome.pageAction.onClicked.addListener(function(tab) {
 	});
 });
 
-function checkForValidUrl(id, info, tab) {
-    if (tab.status !== "complete"){
-        console.log("not fully loaded yet");
-        return;
-    }
-	if (tab.url.indexOf('http://www.coupons.com') == 0) {
-	chrome.pageAction.show(id);
-	}
+function displayPageAction(tabid){
+    chrome.tabs.get(tabid, function(tab){
+        console.log(tab.status);
+        if (tab.status !== "complete"){
+            return;
+        }
+        if (tab.url.indexOf('http://www.coupons.com') == 0) {
+            chrome.pageAction.show(tabid);
+        }
+    });
+}
+
+function checkForValidUrl(id, info, tab) { 
+    displayPageAction(id);
 };
 
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
+

@@ -47,6 +47,7 @@ font:1.2em Myriad Pro;
 	cursor:pointer;
 }
 
+
 button#cancel {
 padding:0.6em 0.8em;
 background-color:#2ecc71;
@@ -58,49 +59,14 @@ right: 0px;
 margin: auto;
 }
 
-/*h2{
-	display:block;
-	color:#FFF;
-	text-align:center;
-	font-size:30px;
-	padding:50px;
-}*/
 
 div#myloader h2 {
   color:#FFF;
   font:1.2em Myriad Pro;
   margin: 125px 0px 0px 0px;
 }
-/*
-div#myloader h2 {
-  font:1.2em Myriad Pro;
-  margin: 150px 0px 0px 0px;
-}
 
-div#myloader input, button {
-  font:1.2em Myriad Pro;
-  margin: 50px 0px 0px 0px;
-}
-
-
-div#myloader input {
-  flex:1;
-  padding:0.6em;
-  border:0.2em ;
-}
-button#cancel{
-position: absolute;
-top: 0px;
-right: 0px;
+/*button#yeszipcode, button#nozipcode {
 margin: auto;
-}
 
-
-div#myloader button{
-  padding:0.8em;
-  background-color:#2ecc71;
-  color:white;
-}
-div#myloader button:hover {
-	cursor:pointer;
 }*/

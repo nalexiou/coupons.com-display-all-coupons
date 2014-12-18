@@ -1,7 +1,5 @@
-var loopcount = 0;
-
-var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1])
-
+var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
+var keywords ="";
 
 if ($('#myloader').length === 0) {
 
@@ -10,7 +8,6 @@ if ($('#myloader').length === 0) {
 	        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
 	    };
 	});
-
 	var mydiv = $("<div>", {id: "myloader"});
 	mydiv.css('background-image', 'URL(' + chrome.extension.getURL('myspinner.gif') + ')'); 
 	var mytext = $("<div>", {id: "toptext", text: "Loading coupons...."});
@@ -22,6 +19,10 @@ if ($('#myloader').length === 0) {
 }
 
 else {
+	if ($('#myloader:contains("not found")').length>0){
+		$('#myloader div h2').text("Enter keywords to display coupons on top of page");
+		$('#myloader div h2').css('color', 'white');
+	}
 	$('#myloader').show();
 	$(".pod").css("background-color","inherit");
 }
@@ -33,28 +34,27 @@ function scrollBottom() {
 		window.scrollTo(0,document.body.scrollHeight);
 		
 		if (couponsdisplayed < clippablecoupons) {
-			loopcount++;
 			scrollBottom();
 		}
 		else {
 			$('#myloader').css('background-image', 'URL(' + chrome.extension.getURL('checkmark.png') + ')');
 			$('div#myloader div').text('Loading complete! ').append('<br/><br/> Total coupons: ' + couponsdisplayed );
 			setTimeout(function(){
-				var myform ='<div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div>';
-				var mydiv = $("<div>", {id: "myloader"});
-				mydiv.append(myform);
-				$('#myloader').replaceWith(mydiv);
+				var myform ='<div id="myloader"><div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div></div>';
+				// mydiv.append(myform);
+				$('#myloader').replaceWith(myform);
 				$('#cancel').on('click', function(){
 					$('#myloader').hide();
 				});
 				$('#search').on('click', function(){
 					if ($('#searchterm').val() == "") {
-						alert("You did not enter a search term.");
+						$('#myloader div h2').text('Please enter a keyword.');
+						$('#myloader div h2').css('color', 'yellow');
 					}
 					else {
-					var keywords = $('#searchterm').val();
+					keywords = $('#searchterm').val().trim();
 					words = keywords.split(/\s+/);
-					wordregex = words.join('|');
+					wordregex = "\\b("+words.join('|')+")s?\\b";
 					$('#myloader').hide();
 					searchCoupons(wordregex);
 					}
@@ -64,6 +64,9 @@ function scrollBottom() {
 				    if(e.which == 13) {
 				        $('#search').trigger('click');
 				    }
+				});
+				$('#searchterm').on('click', function(){
+					$(this).select();
 				});
 				window.scrollTo(0,0);
 			}, 3000);
@@ -85,10 +88,36 @@ function searchCoupons(arg){
 			});
 	}
 	else {
-		alert('No coupons were found with provided keyword(s)');
+		$('#myloader div h2').text('\"'+keywords+ '\" not found. Search for something else!');
+		$('#myloader div h2').css('color', 'yellow');
+		$('#myloader').show();
 	}
 }
 
 
+//CODE FOR ADDING ZIP CODE FUNCTIONALITY
+// var myzipform ='<div id="myloader">\
+// 				<div><button type="button" id="cancel">X</button>\
+// 					<h2>Change Coupons.com zipcode?</h2>\
+// 				</div>\
+// 				<div class="field" id="zipform">\
+// 					<button type="button" id="yeszipcode">Yes</button>\
+// 					<button type="button" id="nozipcode">No</button>\
+// 				</div>\
+// 			</div>';
 
+// $('body').append(myzipform);
+// $('#cancel').on('click', function(){
+// 	$('#myloader').hide();
+// });
+// $('#nozipcode').on('click', function(){
+// 	//logic for no zip code change
+// 	return false;
+// });
+// $('#yeszipcode').on('click', function(){
+// 	//logic for zip code change
+// 	window.open('TBD');
+// 	$('#myloader').remove();
+// 	return false;
+// });
 
