@@ -1,7 +1,6 @@
 //setup variables
 
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
-var clippablecoupons = 50;
 var keywords ="";
 
 init();
