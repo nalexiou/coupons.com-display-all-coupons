@@ -2,6 +2,7 @@
 
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
 var keywords ="";
+var stopexecution = false;
 
 init();
 
@@ -9,11 +10,39 @@ init();
 function init() {
 
 	if (!formPresent()) {
-		$('body').append(myform);
-		scrollBottom();
+
+		$('body').append(myZipChangeForm);;
+		$('#cancel').on('click', function(){
+			$('#myloader').hide();
+		});
+		$('#nozipcode').on('click', function(){
+			$('#myloader').replaceWith(myform);
+			//allow user to stop script when clicking the x button
+			$('#cancel').on('click', function(){
+				stopexecution = true;
+				$('#myloader').hide();
+			});
+			scrollBottom();
+		});
+		$('#yeszipcode').on('click', function(){
+			//logic for zip code change
+			$('#myloader div h2').html('You will be directed to a page to change the Coupons.com zip code. Once you change the zip code, please return to Coupons.com to load all coupons.');
+			$('#zipform button').hide();
+			$('#zipform').append('<button type="button" id="agree">I agree, take me there</button>');
+			$('#zipform').append('<button type="button" id="disagree">Skip zip code change</button>');
+			$('#agree').on('click', function(){
+				window.location ='http://print.coupons.com/couponweb/Offers.aspx?pid=13735&nid=20&zid=yy07';
+			});
+			$('#disagree').on('click', function(){
+				$('#nozipcode').trigger('click');
+			});			
+		});
 	}
 	else {
 		displayForm();
+		if  ($('.pod.coupon:not(.limited)').length < clippablecoupons) {
+			scrollBottom();
+		}
 	}
 }
 
@@ -29,14 +58,32 @@ function formPresent() {
 	}
 }
 
-//construct form
+function myZipChangeForm(){
+
+	return 	'<div id="myloader">\
+				<div><button type="button" id="cancel">X</button>\
+					<h2>Would you like to view coupons for a specific zipcode?\
+					(Coupons.com offers vary by zipcode)</h2>\
+				</div>\
+				<div class="field" id="zipform">\
+					<button type="button" id="yeszipcode">Yes</button>\
+					<button type="button" id="nozipcode">No</button>\
+				</div>\
+			</div>';
+}
+
+
+//construct loading form
 function myform(){
 	var mydiv = $("<div>", {id: "myloader"});
 	mydiv.css('background-image', 'URL(' + chrome.extension.getURL('myspinner.gif') + ')'); 
+	//var canceldiv = $("<div>");
+	var cancelbutton = $("<button>", {id: "cancel", text: "X"});
+	//canceldiv.append(cancelbutton);
+	mydiv.append(cancelbutton);
 	var mytext = $("<div>", {id: "toptext", text: "Loading coupons...."});
 	var coupontag = $("<span>", {id: "mycoupontotal", text: $('.pod.coupon:not(.limited)').length});
 	mytext.append('<br/><br/>Total coupons loaded: ').append(coupontag);
-
 	return mydiv.append(mytext);
 }
 
@@ -91,29 +138,35 @@ function setupSearchForm(){
 }
 
 function scrollBottom() {
-	setTimeout(function timeOut() {
-		//get current coupon count displayed on page
-		couponsdisplayed = $('.pod.coupon:not(.limited)').length;
-		//display current coupon count
-		$('#mycoupontotal').text(couponsdisplayed);
-		//scroll to bottom
-		window.scrollTo(0,document.body.scrollHeight);
-		
-		//recursive call - if all coupons are not displayed, keep scrolling to bottom
-		if (couponsdisplayed < clippablecoupons) {
-			scrollBottom();
-		}
-		//coupons finished loading
-		else {
-			displayTotalCoupons();//display Total Coupon count
-			//setup search form
-			setTimeout(
-				setupSearchForm, 3000);
+	if (stopexecution === false) {
+		setTimeout(function timeOut() {
+			//get current coupon count displayed on page
+			couponsdisplayed = $('.pod.coupon:not(.limited)').length;
+			//display current coupon count
+			$('#mycoupontotal').text(couponsdisplayed);
+			//scroll to bottom
+			window.scrollTo(0,document.body.scrollHeight);
+			
+			//recursive call - if all coupons are not displayed, keep scrolling to bottom
+			if (couponsdisplayed < clippablecoupons) {
+				scrollBottom();
 			}
-	}, 500);
+			//coupons finished loading
+			else {
+				displayTotalCoupons();//display Total Coupon count
+				//setup search form
+				setTimeout(
+					setupSearchForm, 3000);
+				}
+		}, 500);
+	}
+	else {
+
+		return false;
+	}
 }
 
-
+//Regex selector
 $.expr[":"].matchRegex = $.expr.createPseudo(function(arg) {
     return function( elem ) {
     	return $(elem).text().match(new RegExp(arg, 'i')) != null;
@@ -147,29 +200,4 @@ function searchCoupons(arg){
 }
 
 
-//CODE FOR ADDING ZIP CODE FUNCTIONALITY
-// var myzipform ='<div id="myloader">\
-// 				<div><button type="button" id="cancel">X</button>\
-// 					<h2>Change Coupons.com zipcode?</h2>\
-// 				</div>\
-// 				<div class="field" id="zipform">\
-// 					<button type="button" id="yeszipcode">Yes</button>\
-// 					<button type="button" id="nozipcode">No</button>\
-// 				</div>\
-// 			</div>';
-
-// $('body').append(myzipform);
-// $('#cancel').on('click', function(){
-// 	$('#myloader').hide();
-// });
-// $('#nozipcode').on('click', function(){
-// 	//logic for no zip code change
-// 	return false;
-// });
-// $('#yeszipcode').on('click', function(){
-// 	//logic for zip code change
-// 	window.open('TBD');
-// 	$('#myloader').remove();
-// 	return false;
-// });
 
