@@ -2,15 +2,13 @@
 
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
 var keywords ="";
-var stopexecution = false;
+var stopexecution = true;
 
 init();
 
 
 function init() {
-
 	if (!formPresent()) {
-
 		$('body').append(myZipChangeForm);;
 		$('#cancel').on('click', function(){
 			$('#myloader').hide();
@@ -19,9 +17,10 @@ function init() {
 			$('#myloader').replaceWith(myform);
 			//allow user to stop script when clicking the x button
 			$('#cancel').on('click', function(){
-				stopexecution = true;
 				$('#myloader').hide();
+				stopexecution = true;
 			});
+			stopexecution = false;
 			scrollBottom();
 		});
 		$('#yeszipcode').on('click', function(){
@@ -40,7 +39,8 @@ function init() {
 	}
 	else {
 		displayForm();
-		if  ($('.pod.coupon:not(.limited)').length < clippablecoupons) {
+		if  ($('.pod.coupon:not(.limited)').length < clippablecoupons && $('#toptext').length>0) {
+			stopexecution = false;
 			scrollBottom();
 		}
 	}
