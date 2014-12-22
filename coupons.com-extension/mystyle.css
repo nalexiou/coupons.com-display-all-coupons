@@ -1,5 +1,5 @@
 div#myloader {
-background:#6495ED no-repeat center center;
+background:#6495ED no-repeat center center;  
 text-align: center;
 position: fixed;
 top: 50%;
@@ -12,6 +12,20 @@ z-index: 999;
 color:#FFF;
 font:1.2em Myriad Pro;
 }
+
+.spotlight {
+    position: fixed;  
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998; 
+    background-color: #000;
+    color:black;
+    opacity: .8;
+    filter: alpha(opacity=80);
+}
+
 
 #toptext, #mycoupontotal {
 margin: 100px 0px 0px 0px;
@@ -43,7 +57,7 @@ font:1.2em Myriad Pro;
   color:white;
   border:none;
 }
-.field>button:hover {
+.field>button:hover, #cancel:hover {
 	cursor:pointer;
 }
 

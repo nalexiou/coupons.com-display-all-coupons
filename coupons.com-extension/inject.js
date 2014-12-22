@@ -4,20 +4,33 @@ var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"cou
 var keywords ="";
 var stopexecution = true;
 
+var overlay = {
+	    show: function () {
+        	$("#lightbox").hide().addClass('spotlight').fadeIn("slow");
+    	},
+    	hide: function () {
+    		$("#lightbox").fadeOut("slow", function() {
+    			$(this).removeClass('spotlight');	
+			});
+		}
+}
+
 init();
-
-
+	
 function init() {
 	if (!formPresent()) {
-		$('body').append(myZipChangeForm);;
+		$('body').append(myZipChangeForm);
+		overlay.show();
 		$('#cancel').on('click', function(){
 			$('#myloader').hide();
+			overlay.hide();
 		});
 		$('#nozipcode').on('click', function(){
 			$('#myloader').replaceWith(myform);
 			//allow user to stop script when clicking the x button
 			$('#cancel').on('click', function(){
 				$('#myloader').hide();
+				overlay.hide();
 				stopexecution = true;
 			});
 			stopexecution = false;
@@ -60,7 +73,8 @@ function formPresent() {
 
 function myZipChangeForm(){
 
-	return 	'<div id="myloader">\
+	return 	'<div id="lightbox"></div>\
+			<div id="myloader">\
 				<div><button type="button" id="cancel">X</button>\
 					<h2>Would you like to view coupons for a specific zipcode?\
 					(Coupons.com offers vary by zipcode)</h2>\
@@ -95,6 +109,7 @@ function displayForm(){
 	}
 	//display form
 	$('#myloader').show();
+	overlay.show();
 	//remove highlight from coupons
 	$(".pod").css("background-color","inherit");
 }
@@ -111,6 +126,7 @@ function setupSearchForm(){
 	//setup event listeners for search form
 		$('#cancel').on('click', function(){
 			$('#myloader').hide();
+			overlay.hide();
 		});
 		$('#search').on('click', function(){
 			if ($('#searchterm').val() == "") {
@@ -121,7 +137,6 @@ function setupSearchForm(){
 			keywords = $('#searchterm').val().trim();
 			words = keywords.split(/\s+/);
 			wordregex = "\\b("+words.join('|')+")s?\\b";
-			$('#myloader').hide();
 			searchCoupons(wordregex);
 			}
 		});
@@ -189,13 +204,14 @@ function searchCoupons(arg){
 			// 	});
 			$(itemparent).prepend(temp);
 		});
+		$('#myloader').hide();
+		overlay.hide();
 		window.scrollTo(0,0);
 	}
 	//there were no matched coupons. update search form and display it
 	else {
 		$('#myloader div h2').text('\"'+keywords+ '\" not found. Search for something else!');
 		$('#myloader div h2').css('color', 'yellow');
-		$('#myloader').show();
 	}
 }
 

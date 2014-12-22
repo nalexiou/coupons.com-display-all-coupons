@@ -3,7 +3,7 @@
   "name": "Coupons.com Helper",
   "short_name": "Coupon Help",
   "description": "Display and search all coupons on coupons.com.",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "author": "Nikolaos Alexiou",
 
   "permissions": [
