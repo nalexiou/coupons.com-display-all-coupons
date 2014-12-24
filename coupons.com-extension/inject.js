@@ -73,9 +73,10 @@ function formPresent() {
 
 function myZipChangeForm(){
 
-	return 	'<div id="lightbox"></div>\
-			<div id="myloader">\
-				<div><button type="button" id="cancel">X</button>\
+
+	return	$('<div id="lightbox"></div>\
+					<div id="myloader">\
+					<div><button type="button" id="cancel">X</button>\
 					<h2>Would you like to view coupons for a specific zipcode?\
 					(Coupons.com offers vary by zipcode)</h2>\
 				</div>\
@@ -83,7 +84,7 @@ function myZipChangeForm(){
 					<button type="button" id="yeszipcode">Yes</button>\
 					<button type="button" id="nozipcode">No</button>\
 				</div>\
-			</div>';
+			</div>');
 }
 
 
@@ -109,6 +110,7 @@ function displayForm(){
 	}
 	//display form
 	$('#myloader').show();
+	displayClipButton();
 	overlay.show();
 	//remove highlight from coupons
 	$(".pod").css("background-color","inherit");
@@ -118,38 +120,53 @@ function displayTotalCoupons(){
 	$('#myloader').css('background-image', 'URL(' + chrome.extension.getURL('checkmark.png') + ')');
 	$('div#myloader div').text('Loading complete! ').append('<br/><br/> Total coupons: ' + couponsdisplayed );
 }
+function displayClipButton(){
+	if ($('.pod.coupon:has(span.box.clip-box.clip-action:visible)').length > 0) {
+		$('#displayclipped').show();
+	}
+	else {
+		$('#displayclipped').hide();
+	}
+}
 
 function setupSearchForm(){
 	var searchform ='<div id="myloader"><div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div></div>';
 	//replace current form with Search Form
 	$('#myloader').replaceWith(searchform);
+	var displayclippedelement = $("<button>", {id: "displayclipped", title: "Display clipped coupons"});
+	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat'}); 
+	displayclippedelement.hide();
+	$('#cancel').before(displayclippedelement);
+	displayClipButton();
+	$('#displayclipped').on('click', function(){
+		displayClipped();
+	});
 	//setup event listeners for search form
-		$('#cancel').on('click', function(){
-			$('#myloader').hide();
-			overlay.hide();
-		});
-		$('#search').on('click', function(){
-			if ($('#searchterm').val() == "") {
-				$('#myloader div h2').text('Please enter a keyword.');
-				$('#myloader div h2').css('color', 'yellow');
-			}
-			else {
-			keywords = $('#searchterm').val().trim();
-			words = keywords.split(/\s+/);
-			wordregex = "\\b("+words.join('|')+")s?\\b";
-			searchCoupons(wordregex);
-			}
-		});
-
-		$('#searchterm').keypress(function(e) {
-		    if(e.which == 13) {
-		        $('#search').trigger('click');
-		    }
-		});
-		$('#searchterm').on('click', function(){
-			$(this).select();
-		});
-		window.scrollTo(0,0);
+	$('#cancel').on('click', function(){
+		$('#myloader').hide();
+		overlay.hide();
+	});
+	$('#search').on('click', function(){
+		if ($('#searchterm').val() == "") {
+			$('#myloader div h2').text('Please enter a keyword.');
+			$('#myloader div h2').css('color', 'yellow');
+		}
+		else {
+		keywords = $('#searchterm').val().trim();
+		words = keywords.split(/\s+/);
+		wordregex = "\\b("+words.join('|')+")s?\\b";
+		searchCoupons(wordregex);
+		}
+	});
+	$('#searchterm').keypress(function(e) {
+	    if(e.which == 13) {
+	        $('#search').trigger('click');
+	    }
+	});
+	$('#searchterm').on('click', function(){
+		$(this).select();
+	});
+	window.scrollTo(0,0);
 }
 
 function scrollBottom() {
@@ -188,6 +205,24 @@ $.expr[":"].matchRegex = $.expr.createPseudo(function(arg) {
     };
 });
 
+function swapElements(arg1, arg2){
+	var itemparent = $(arg1).parent();
+	var temp = arg2.replaceWith(arg1);
+	$(itemparent).prepend(temp);
+}
+
+function displayClipped(){
+	//get clipped coupons
+	var clippedCoupons = $('.pod.coupon:has(span.box.clip-box.clip-action:visible)');
+	//bubble clipped coupons to top
+	$.each(clippedCoupons, function(i, item){
+		var ununclipped = $('.pod.coupon:has(span.box.clip-box.clip-action:not(:visible))').first();
+		swapElements(item,ununclipped);
+	});
+	$('#myloader').hide();
+	overlay.hide();
+	window.scrollTo(0,0);
+}
 
 function searchCoupons(arg){
 	//get matched coupons based on keywords
@@ -197,12 +232,8 @@ function searchCoupons(arg){
 	//bubble matched coupons to top
 	if (matchedcoupons.length>0){
 		$.each(matchedcoupons, function(i, item){
-			var itemparent = $(item).parent();
-			var temp = $('.pod:not(:matchRegex('+arg+'))').first().replaceWith(item);
-			// var temp = $(".pod").filter(function() {
-			// 	return($(this).text().match(new RegExp(arg, 'i')) == null);
-			// 	});
-			$(itemparent).prepend(temp);
+			var unmatched = $('.pod:not(:matchRegex('+arg+'))').first();
+			swapElements(item,unmatched);
 		});
 		$('#myloader').hide();
 		overlay.hide();

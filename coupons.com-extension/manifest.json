@@ -3,7 +3,7 @@
   "name": "Coupons.com Helper",
   "short_name": "Coupon Help",
   "description": "Display and search all coupons on coupons.com.",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "author": "Nikolaos Alexiou",
 
   "permissions": [
@@ -26,5 +26,5 @@
     "persistent": false
   },
 
-  "web_accessible_resources": ["myspinner.gif", "checkmark.png"]
+  "web_accessible_resources": ["myspinner.gif", "checkmark.png", "clip.png"]
 }

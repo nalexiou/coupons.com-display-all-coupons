@@ -57,7 +57,7 @@ font:1.2em Myriad Pro;
   color:white;
   border:none;
 }
-.field>button:hover, #cancel:hover {
+.field>button:hover, #cancel:hover, #displayclipped:hover {
 	cursor:pointer;
 }
 
@@ -70,6 +70,18 @@ border:none;
 position: absolute;
 top: 0px;
 right: 0px;
+margin: auto;
+}
+
+button#displayclipped {
+height: 35px;
+width: 35px;
+background-color:#2ecc71;
+color:white;
+border:none;
+position: absolute;
+top: 0px;
+left: 0px;
 margin: auto;
 }
 
