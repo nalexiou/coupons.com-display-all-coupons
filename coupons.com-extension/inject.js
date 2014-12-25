@@ -3,6 +3,7 @@
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
 var keywords ="";
 var stopexecution = true;
+clippablecoupons = 50;
 
 var overlay = {
 	    show: function () {
@@ -133,6 +134,8 @@ function setupSearchForm(){
 	var searchform ='<div id="myloader"><div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div></div>';
 	//replace current form with Search Form
 	$('#myloader').replaceWith(searchform);
+	$('#myloader').css({'background-image': 'URL(' + chrome.extension.getURL('snowflake.png') + ')', 'background-repeat': 'repeat'}); 
+
 	var displayclippedelement = $("<button>", {id: "displayclipped", title: "Display clipped coupons"});
 	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat'}); 
 	displayclippedelement.hide();
