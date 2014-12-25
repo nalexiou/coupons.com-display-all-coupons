@@ -3,7 +3,6 @@
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
 var keywords ="";
 var stopexecution = true;
-clippablecoupons = 50;
 
 var overlay = {
 	    show: function () {
