@@ -3,7 +3,6 @@
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
 var keywords ="";
 var stopexecution = true;
-var clippablecoupons =50;
 var overlay = {
 	    show: function () {
         	$("#lightbox").hide().addClass('spotlight').fadeIn("slow");
