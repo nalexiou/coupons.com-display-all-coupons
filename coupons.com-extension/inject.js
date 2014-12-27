@@ -3,7 +3,7 @@
 var clippablecoupons = Number($('script').text().match(/clippableTotal\":\{\"count\":(\d\d\d)/)[1]);
 var keywords ="";
 var stopexecution = true;
-
+var clippablecoupons = 50;
 var overlay = {
 	    show: function () {
         	$("#lightbox").hide().addClass('spotlight').fadeIn("slow");
@@ -110,7 +110,7 @@ function displayForm(){
 	}
 	//display form
 	$('#myloader').show();
-	displayClipButton();
+	displayClipButtons();
 	overlay.show();
 	//remove highlight from coupons
 	$(".pod").css("background-color","inherit");
@@ -120,12 +120,14 @@ function displayTotalCoupons(){
 	$('#myloader').css('background-image', 'URL(' + chrome.extension.getURL('checkmark.png') + ')');
 	$('div#myloader div').text('Loading complete! ').append('<br/><br/> Total coupons: ' + couponsdisplayed );
 }
-function displayClipButton(){
+function displayClipButtons(){
 	if ($('.pod.coupon:has(span.box.clip-box.clip-action:visible)').length > 0) {
 		$('#displayclipped').show();
+		$('#removeclipped').show();
 	}
 	else {
 		$('#displayclipped').hide();
+		$('#removeclipped').hide();
 	}
 }
 
@@ -133,15 +135,24 @@ function setupSearchForm(){
 	var searchform ='<div id="myloader"><div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div></div>';
 	//replace current form with Search Form
 	$('#myloader').replaceWith(searchform);
-	$('#myloader').css({'background-image': 'URL(' + chrome.extension.getURL('snowflake.png') + ')', 'background-repeat': 'repeat'}); 
+	$('#myloader').css({'background-image': 'URL(' + chrome.extension.getURL('confetti.png') + ')', 'background-repeat': 'repeat'}); 
 
 	var displayclippedelement = $("<button>", {id: "displayclipped", title: "Display clipped coupons"});
-	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat'}); 
+	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
 	displayclippedelement.hide();
 	$('#cancel').before(displayclippedelement);
-	displayClipButton();
+	var removeclippedelement = $("<button>", {id: "removeclipped", title: "Unclip clipped coupons"});
+	removeclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('unclip.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
+	removeclippedelement.hide();
+	$('#cancel').before(displayclippedelement,removeclippedelement);
+	$('div#myloader').css('background-color', 'navy');
+	$('div#myloader h2').css({'background-color': 'navy', 'display': 'inline-block'});	
+	displayClipButtons();
 	$('#displayclipped').on('click', function(){
 		displayClipped();
+	});
+	$('#removeclipped').on('click', function(){
+		removeClipped();
 	});
 	//setup event listeners for search form
 	$('#cancel').on('click', function(){
@@ -221,6 +232,15 @@ function displayClipped(){
 		var ununclipped = $('.pod.coupon:has(span.box.clip-box.clip-action:not(:visible))').first();
 		swapElements(item,ununclipped);
 	});
+	$('#myloader').hide();
+	overlay.hide();
+	window.scrollTo(0,0);
+}
+
+function removeClipped(){
+	//unclip Clipped coupons
+	$('.clipped-view').has('span.box.clip-box.clip-action:visible').find('span.box.clip-box.unclip-action').trigger('click');
+	//hide form and scroll to top
 	$('#myloader').hide();
 	overlay.hide();
 	window.scrollTo(0,0);
