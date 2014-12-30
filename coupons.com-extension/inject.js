@@ -222,8 +222,14 @@ $.expr[":"].matchRegex = $.expr.createPseudo(function(arg) {
 
 function swapElements(arg1, arg2){
 	var itemparent = $(arg1).parent();
+	var itemindex = $(arg1).index();
 	var temp = arg2.replaceWith(arg1);
-	$(itemparent).prepend(temp);
+	if (itemindex === 0) {
+		$(itemparent).prepend(temp);
+	}
+	else {
+		$(itemparent).children().eq(itemindex - 1).after(temp);
+	}
 }
 
 function displayClipped(){
