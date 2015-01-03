@@ -150,6 +150,16 @@ function setupSearchForm(){
 	removeclippedelement.hide();
 	$('#cancel').before(displayclippedelement,removeclippedelement);
 	displayClipButtons();
+
+	var flattrbtn = "<script id='fb8bxyd'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=nalexiou&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb8bxyd');</script>"
+	var donatebtn = '<br><br><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">'
+		+ '<input type="hidden" name="cmd" value="_s-xclick">'
+		+ '<input type="hidden" name="hosted_button_id" value="EKUQK44Z784BE">'
+		+'<input type="image" src="http://i.imgur.com/ecYyvOj.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">'
+		+'<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form>'
+
+	$('#myloader').append(flattrbtn, donatebtn);
+
 	$('#displayclipped').on('click', function(){
 		displayClipped();
 	});
