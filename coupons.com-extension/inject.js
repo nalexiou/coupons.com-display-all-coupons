@@ -105,7 +105,8 @@ function displayForm(){
 	//reset form text if keywords were not found
 	if ($('#myloader:contains("not found")').length>0){
 		var formtext = "Enter keywords to display coupons on top of page";
-		$('#myloader div h2').text(formtext).css('color', 'white');
+		$('#searchterm').attr('placeholder', 'Cereal shampoo chocolate Tide Charmin').val('');
+		$('#myloader div h2').text(formtext).css('color', '#3C7577');
 	}
 	//display form
 	$('#myloader').show();
@@ -117,7 +118,9 @@ function displayForm(){
 
 function displayTotalCoupons(){
 	$('#myloader').css('background-image', 'URL(' + chrome.extension.getURL('checkmark.png') + ')');
-	$('div#myloader div').text('Loading complete! ').append('<br/><br/> Total coupons: ' + couponsdisplayed );
+	var mytext = $("<div>", {id: "toptext", text: "Loading complete!"});
+	mytext.append('<br/><br/> Total coupons: ' + couponsdisplayed );
+	$('div#myloader div').replaceWith(mytext);
 }
 function displayClipButtons(){
 	if ($('.pod.coupon:has(span.box.clip-box.clip-action:visible)').length > 0) {
@@ -131,9 +134,9 @@ function displayClipButtons(){
 }
 
 function customBackground(){
-	$('#myloader').css({'background-image': 'URL(' + chrome.extension.getURL('confetti.png') + ')', 'background-repeat': 'repeat'}); 
-	$('div#myloader').css('background-color', 'navy');
-	$('div#myloader h2').css({'background-color': 'navy', 'display': 'inline-block'});	
+	$('#myloader').css({'background-image': 'URL(' + chrome.extension.getURL('snow.gif') + ')', 'background-repeat': 'repeat'}); 
+	$('div#myloader').css('background-color', 'transparent');
+	$('div#myloader h2').css({'color': '#3C7577', 'display': 'inline-block'});	
 }
 
 function setupSearchForm(){
@@ -174,7 +177,7 @@ function setupSearchForm(){
 	$('#search').on('click', function(){
 		if ($('#searchterm').val() == "") {
 			$('#myloader div h2').text('Please enter a keyword.');
-			$('#myloader div h2').css('color', 'yellow');
+			$('#myloader div h2').css('color', '#3C7577');
 		}
 		else {
 		keywords = $('#searchterm').val().trim();
@@ -202,7 +205,7 @@ function scrollBottom() {
 			//display current coupon count
 			$('#mycoupontotal').text(couponsdisplayed);
 			//scroll to bottom
-			window.scrollTo(0,document.body.scrollHeight);
+			$('html, body').animate({ scrollTop: $(document).height()-$(window).height() }, 300);
 			
 			//recursive call - if all coupons are not displayed, keep scrolling to bottom
 			if (couponsdisplayed < clippablecoupons) {
@@ -282,7 +285,7 @@ function searchCoupons(arg){
 	//there were no matched coupons. update search form and display it
 	else {
 		$('#myloader div h2').text('\"'+keywords+ '\" not found. Search for something else!');
-		$('#myloader div h2').css('color', 'yellow');
+		$('#myloader div h2').css('color', 'red');
 	}
 }
 
