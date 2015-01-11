@@ -143,6 +143,7 @@ function setupSearchForm(){
 	var searchform ='<div id="myloader"><div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div></div>';
 	//replace current form with Search Form
 	$('#myloader').replaceWith(searchform);
+	$("<div>", {id: "couponsfound", html: "&nbsp;"}).appendTo($('#myloader div h2'));
 	customBackground();
 	var displayclippedelement = $("<button>", {id: "displayclipped", title: "Display clipped coupons"});
 	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
@@ -176,25 +177,41 @@ function setupSearchForm(){
 	});
 	$('#search').on('click', function(){
 		if ($('#searchterm').val() == "") {
-			$('#myloader div h2').text('Please enter a keyword.');
+			
 			$('#myloader div h2').css('color', '#3C7577');
 		}
 		else {
-		keywords = $('#searchterm').val().trim();
-		words = keywords.split(/\s+/);
-		wordregex = "\\b("+words.join('|')+")s?\\b";
+		var wordregex = keywordsToRegex($('#searchterm').val());
 		searchCoupons(wordregex);
 		}
 	});
-	$('#searchterm').keypress(function(e) {
+	$('#searchterm').keyup(function(e) {
 	    if(e.which == 13) {
 	        $('#search').trigger('click');
+	    }
+	    else if ($('#searchterm').val() != "") {
+	    	var wordregex = keywordsToRegex($('#searchterm').val());
+	    	var totalmatchedcoupons = $('.pod.coupon:matchRegex('+ wordregex +')').length;
+	    	if (totalmatchedcoupons >0) {
+	    	$('#couponsfound').text("Total coupons found: " + totalmatchedcoupons);
+	    	}
+	    	else {
+	    		$('#couponsfound').html("&nbsp;");
+	    	}
+	    }
+	    else {
+	    	$('#couponsfound').html("&nbsp;");
 	    }
 	});
 	$('#searchterm').on('click', function(){
 		$(this).select();
 	});
 	window.scrollTo(0,0);
+}
+
+function keywordsToRegex(arg){
+			var words = arg.trim().split(/\s+/);
+			return "\\b("+words.join('|')+")s?\\b";
 }
 
 function scrollBottom() {
