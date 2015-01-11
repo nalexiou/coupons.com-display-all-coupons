@@ -91,9 +91,7 @@ function myZipChangeForm(){
 function myform(){
 	var mydiv = $("<div>", {id: "myloader"});
 	mydiv.css('background-image', 'URL(' + chrome.extension.getURL('myspinner.gif') + ')'); 
-	//var canceldiv = $("<div>");
 	var cancelbutton = $("<button>", {id: "cancel", text: "X"});
-	//canceldiv.append(cancelbutton);
 	mydiv.append(cancelbutton);
 	var mytext = $("<div>", {id: "toptext", text: "Loading coupons...."});
 	var coupontag = $("<span>", {id: "mycoupontotal", text: $('.pod.coupon:not(.limited)').length});
@@ -211,7 +209,7 @@ function setupSearchForm(){
 
 function keywordsToRegex(arg){
 			var words = arg.trim().split(/\s+/);
-			return "\\b("+words.join('|')+")s?\\b";
+			return "(?:^|[^’'])\\b("+words.join('|')+")s?\\b";
 }
 
 function scrollBottom() {
@@ -246,7 +244,7 @@ function scrollBottom() {
 //Regex selector
 $.expr[":"].matchRegex = $.expr.createPseudo(function(arg) {
     return function( elem ) {
-    	return $(elem).text().match(new RegExp(arg, 'i')) != null;
+    	return new RegExp(arg, 'i').test($(elem).text());
     };
 });
 
