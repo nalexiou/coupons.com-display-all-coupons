@@ -142,7 +142,7 @@ function setupSearchForm(){
 	//replace current form with Search Form
 	$('#myloader').replaceWith(searchform);
 	$("<div>", {id: "couponsfound", html: "&nbsp;"}).appendTo($('#myloader div h2'));
-	customBackground();
+	//customBackground();
 	var displayclippedelement = $("<button>", {id: "displayclipped", title: "Display clipped coupons"});
 	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
 	displayclippedelement.hide();
