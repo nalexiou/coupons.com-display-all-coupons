@@ -75,7 +75,7 @@ function myZipChangeForm(){
 
 	return	$('<div id="lightbox"></div>\
 					<div id="myloader">\
-					<div><button type="button" id="cancel">X</button>\
+					<div><button type="button" class="tooltip-right" data-tooltip="Close popup" id="cancel">X</button>\
 					<h2>Would you like to view coupons for a specific zipcode?\
 					(Coupons.com offers vary by zipcode)</h2>\
 				</div>\
@@ -91,7 +91,7 @@ function myZipChangeForm(){
 function myform(){
 	var mydiv = $("<div>", {id: "myloader"});
 	mydiv.css('background-image', 'URL(' + chrome.extension.getURL('myspinner.gif') + ')'); 
-	var cancelbutton = $("<button>", {id: "cancel", text: "X"});
+	var cancelbutton = $("<button>", {id: "cancel", class: "tooltip-right", "data-tooltip": "Pause loading coupons", text: "X"});
 	mydiv.append(cancelbutton);
 	var mytext = $("<div>", {id: "toptext", text: "Loading coupons...."});
 	var coupontag = $("<span>", {id: "mycoupontotal", text: $('.pod.coupon:not(.limited)').length});
@@ -103,7 +103,7 @@ function displayForm(){
 	//reset form text if keywords were not found
 	if ($('#myloader:contains("not found")').length>0){
 		var formtext = "Enter keywords to display coupons on top of page";
-		$('#searchterm').attr('placeholder', 'Cereal shampoo chocolate Tide Charmin').val('');
+		$('#searchterm').attr('placeholder', 'Cereal shampoo Tide &quot;Speed Stick&quot;').val('');
 		$('#myloader div h2').text(formtext).css('color', '#3C7577');
 	}
 	//display form
@@ -138,19 +138,20 @@ function customBackground(){
 }
 
 function setupSearchForm(){
-	var searchform ='<div id="myloader"><div><button type="button" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo chocolate Tide Charmin" /><button type="button" id="search">Find</button></div></div>';
+	var searchform ='<div id="myloader"><div><button type="button" class="tooltip-right" data-tooltip="Close popup" id="cancel">X</button><h2>Enter keywords to display coupons on top of page</h2></div><div class="field" id="searchform"><input type="text" id="searchterm" placeholder="Cereal shampoo Tide &quot;Speed Stick&quot;" /><button type="button" id="search">Find</button></div></div>';
 	//replace current form with Search Form
 	$('#myloader').replaceWith(searchform);
 	$("<div>", {id: "couponsfound", html: "&nbsp;"}).appendTo($('#myloader div h2'));
 	//customBackground();
-	var displayclippedelement = $("<button>", {id: "displayclipped", title: "Display clipped coupons"});
+	var displayclippedelement = $("<button>", {id: "displayclipped", class: "tooltip-left", "data-tooltip": "Display clipped coupon(s) on top"});
 	displayclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('clip.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
 	displayclippedelement.hide();
-	$('#cancel').before(displayclippedelement);
-	var removeclippedelement = $("<button>", {id: "removeclipped", title: "Unclip clipped coupons"});
+	var removeclippedelement = $("<button>", {id: "removeclipped", class: "tooltip-right", "data-tooltip": "Unclip clipped coupon(s)"});
 	removeclippedelement.css({'background-image': 'URL(' + chrome.extension.getURL('unclip.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
 	removeclippedelement.hide();
-	$('#cancel').before(displayclippedelement,removeclippedelement);
+	var lightbulbelement = $("<button>", {id: "lightbulb", class: "tooltip-left", "data-tooltip": "Enter multiple keywords to search for multiple products and/or use single (\') or double (\") quotes to search for a phrase"});
+	lightbulbelement.css({'background-image': 'URL(' + chrome.extension.getURL('lightbulb.png') + ')', 'background-repeat': 'no-repeat', 'background-position': 'center center'}); 
+	$('#cancel').before(displayclippedelement,removeclippedelement, lightbulbelement);
 	displayClipButtons();
 
 	var flattrbtn = "<script id='fb8bxyd'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=nalexiou&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb8bxyd');</script>"
@@ -208,7 +209,14 @@ function setupSearchForm(){
 }
 
 function keywordsToRegex(arg){
-			var words = arg.trim().split(/\s+/);
+			//regex to include quoted phrases
+			var words = arg.trim().match(/\w+|["'].+["']/g)
+			if (words !== null) {
+				for(x = 0; x < words.length; x++)
+				{
+				    words[x] = words[x].replace(/\"|\'/g, '');
+				}
+			}
 			return "(?:^|[^’'])\\b("+words.join('|')+")s?\\b";
 }
 
