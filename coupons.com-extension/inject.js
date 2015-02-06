@@ -283,7 +283,9 @@ function displayClipped(){
 
 function removeClipped(){
 	//unclip Clipped coupons
-	$('.clipped-view').has('span.box.clip-box.clip-action:visible').find('span.box.clip-box.unclip-action').trigger('click');
+	while ($('.clipped-view').has('span.box.clip-box.clip-action:visible').length > 0)	{
+		$('.clipped-view').has('span.box.clip-box.clip-action:visible').find('span.box.clip-box.unclip-action').first().trigger('click');
+	}
 	//hide form and scroll to top
 	$('#myloader').hide();
 	overlay.hide();
