@@ -14,7 +14,7 @@ var overlay = {
 		}
 }
 
-init();
+//init();
 	
 function init() {
 	if (!formPresent()) {
